@@ -7,7 +7,6 @@ public class Item {
 
     private int id;
     private int size;
-
     private Bin bin;
 
     public int getId() {

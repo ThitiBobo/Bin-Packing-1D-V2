@@ -77,12 +77,57 @@ public class BinPacking {
         return this.objectiveValue;
     }
 
-    public SwitchOperation switchItem() throws ExecutionControl.NotImplementedException {
-        throw new ExecutionControl.NotImplementedException("fe");
+    public SwitchOperation switchItem(Item item1, Item item2) throws Exception {
+        if (item1.getBin() == null || item2.getBin() == null)
+            throw new Exception("items must be in a bin");
+        // GET ALL BINs OBJECTIVE VALUES
+        int oldObjValBin1 = item1.getBin().getObjectiveValue();
+        int oldObjValBin2 = item2.getBin().getObjectiveValue();
+        // REMOVE ITEMS
+        item1.getBin().remove(item1);
+        item2.getBin().remove(item2);
+        // CHECK SPACE
+        try{
+            if (!item1.getBin().hasSpace(item2)) throw new Exception("Not enough space in the bin");
+            if (!item2.getBin().hasSpace(item1)) throw new Exception("Not enough space in the bin");
+        } catch (Exception e){
+            // PUTS ITEMS BACK
+            item1.getBin().add(item1);
+            item2.getBin().add(item2);
+            throw e;
+        }
+        // MOVE ITEMS
+        item1.getBin().add(item2);
+        item2.getBin().add(item1);
+        // UPDATE ITEM'S BIN
+        Bin bin2 = item2.getBin();
+        item2.setBin(item1.getBin());
+        item1.setBin(bin2);
+        // UPDATE OBJECTIVE VALUE
+        this.objectiveValue -= (oldObjValBin1 + oldObjValBin2);
+        this.objectiveValue += (item1.getBin().getObjectiveValue() + item2.getBin().getObjectiveValue());
+        return new SwitchOperation(this.objectiveValue, item1, item2);
     }
 
-    public MoveOperation moveItem() throws ExecutionControl.NotImplementedException {
-        throw new ExecutionControl.NotImplementedException("fe");
+    public MoveOperation moveItem(Item item, Bin newBin) throws Exception {
+        if (!newBin.hasSpace(item)) throw new Exception("Not enough space in the bin");
+        if (item.getBin() == null) throw new Exception("item must be contained in a bin");
+        if (!binList.contains(newBin)) binList.add(newBin);
+
+        Bin oldBin = item.getBin();
+        int oldObjectiveValue = oldBin.getObjectiveValue();
+
+        // MOVE ITEM
+        oldBin.remove(item);
+        newBin.add(item);
+        item.setBin(newBin);
+
+        // IF OLD BIN EMPTY
+        if (oldBin.isEmpty()) binList.remove(oldBin);
+
+        // UPDATE OBJECTIVE VALUE
+        this.objectiveValue += (newBin.getObjectiveValue() - oldObjectiveValue);
+        return new MoveOperation(this.objectiveValue, item, newBin);
     }
 
     public List<Operation> getAllNeighborhoodOperation() throws ExecutionControl.NotImplementedException {

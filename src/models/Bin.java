@@ -67,6 +67,10 @@ public class Bin {
         return item;
     }
 
+    public Item remove(Item item){
+        return remove(list.indexOf(item));
+    }
+
     private int updateObjectiveValue(){
         this.objectiveValue = (int)Math.pow(this.occupiedSpace, 2);
         return this.objectiveValue;

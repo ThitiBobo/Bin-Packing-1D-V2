@@ -60,7 +60,8 @@ public class BinPacking {
     }
 
     public BinPacking(int _sizeLimit, List<Item> _items){
-        this(_sizeLimit, _items, new ArrayList<>());
+        this.sizeLimit = _sizeLimit;
+        setItemList(_items);
     }
 
     private int updateObjectiveValue(){

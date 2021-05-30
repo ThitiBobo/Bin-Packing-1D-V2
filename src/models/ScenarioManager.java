@@ -9,11 +9,21 @@ public class ScenarioManager {
     private static ScenarioManager instance;
     private final static String FOLDER_PATH = "resources/data/";
 
-    private List<BinPackingScenario> scenarioList;
+    private Map<String, BinPackingScenario> scenarioList;
     private Map<String, String> binDataList;
 
+    public BinPackingScenario getBinPackingScenario(int index) throws Exception {
+        if (this.scenarioList == null) throw new Exception("list of scenario does not exist, you must initialize it");
+        return this.scenarioList.get(index);
+    }
+
+    public Map<String, BinPackingScenario> getAllBinPackingScenario() throws Exception {
+        if (this.scenarioList == null) throw new Exception("list of scenario does not exist, you must initialize it");
+        return this.scenarioList;
+    }
+
     private ScenarioManager(){
-        this.scenarioList = new ArrayList<>();
+        this.scenarioList = new HashMap<>();
         this.binDataList = new HashMap<>();
 
         List<String> folderList = FileUtils.listFilesForFolder(FOLDER_PATH);
@@ -29,6 +39,31 @@ public class ScenarioManager {
             }
             this.binDataList.put(iterator.next().toString(),data);
         });
+    }
+
+    public void initAllBinPackingScenario(){
+        this.scenarioList.clear();
+        this.binDataList.forEach((key, value) -> {
+            AbstractMap.SimpleEntry<Integer, List<Item>> res = calculateItemList(value);
+            int sizeLimit = res.getKey();
+            List<Item> items = res.getValue();
+            this.scenarioList.put(key ,new BinPackingScenario(sizeLimit, items));
+        });
+    }
+
+    private AbstractMap.SimpleEntry<Integer, List<Item>> calculateItemList( String data){
+        List<String> dataSplit = new ArrayList<String>(Arrays.asList(data.split(System.getProperty("line.separator"))));
+
+        String firstLine = dataSplit.remove(0);
+        String[] firstLineSplit = firstLine.split(" ");
+        int sizeLimit = Integer.parseInt(firstLineSplit[0]);
+        int nbItem = Integer.parseInt(firstLineSplit[1]);
+        List<Item> items = new ArrayList<>();
+
+        for (int i = 0; i < nbItem; i++){
+            items.add(new Item(i,Integer.parseInt(dataSplit.get(i))));
+        }
+        return new AbstractMap.SimpleEntry<>(sizeLimit, items);
     }
 
     public static ScenarioManager getInstance(){

@@ -4,6 +4,7 @@ import models.Bin;
 import models.Item;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,5 +56,26 @@ public class BinPackingGenerator {
                 .sorted(Comparator.comparingInt(Item::getSize).reversed())
                 .collect(Collectors.toList());
         return firstFitBase(sortedList, sizeLimit);
+    }
+
+    public static List<Bin> randomFirstFit(List<Item> items, int sizeLimit){
+        Collections.shuffle(items);
+        return firstFitBase(items, sizeLimit);
+    }
+
+    public static List<Bin> oneItemPerBinGenerator(List<Item> items, int sizeLimit){
+        Collections.shuffle(items);
+        List<Bin> binList = new ArrayList<>();
+
+        items.forEach( item -> {
+            Bin bin = new Bin(sizeLimit);
+            try {
+                bin.add(item);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            binList.add(bin);
+        });
+        return binList;
     }
 }

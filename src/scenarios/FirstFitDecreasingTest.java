@@ -2,7 +2,7 @@ package scenarios;
 
 import models.Bin;
 import utils.BinPackingGenerator;
-import utils.BinUtils;
+import utils.BinPackingUtils;
 
 import java.util.List;
 
@@ -41,8 +41,8 @@ public class FirstFitDecreasingTest extends ScriptBase{
         try {
             manager.getAllBinPackingScenario().forEach( (key, value) -> {
                 System.out.println(key);
-                BinUtils.displayInfo(value.getBinPacking());
-                BinUtils.display(value.getBinPacking());
+                BinPackingUtils.displayInfo(value.getBinList());
+                BinPackingUtils.display(value.getBinList());
                 System.out.println("");
             });
         } catch (Exception e) {

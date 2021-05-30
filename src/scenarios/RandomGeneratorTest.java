@@ -1,14 +1,10 @@
 package scenarios;
 
 import models.Bin;
-import models.BinPacking;
 import utils.BinPackingGenerator;
-import utils.BinUtils;
+import utils.BinPackingUtils;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 public class RandomGeneratorTest extends ScriptBase{
 
@@ -45,8 +41,8 @@ public class RandomGeneratorTest extends ScriptBase{
         try{
             manager.getAllBinPackingScenario().forEach( (key, value) -> {
                 System.out.println(key);
-                BinUtils.displayInfo(value.getBinPacking());
-                BinUtils.display(value.getBinPacking());
+                BinPackingUtils.displayInfo(value.getBinList());
+                BinPackingUtils.display(value.getBinList());
                 System.out.println("");
             });
         } catch (Exception e) {

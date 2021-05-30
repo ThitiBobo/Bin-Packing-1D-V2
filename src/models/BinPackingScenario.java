@@ -2,7 +2,6 @@ package models;
 
 import models.operations.Operation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BinPackingScenario {
@@ -11,7 +10,7 @@ public class BinPackingScenario {
     private List<Item> itemList;
     private BinPacking originalBinList;
     private BinPacking bestBinList;
-    private BinPacking binPacking;
+    private BinPacking binList;
     private List<Operation> operationHistory;
 
     public int getSizeLimit() { return this.sizeLimit; }
@@ -19,7 +18,7 @@ public class BinPackingScenario {
         return this.itemList;
     }
 
-    public BinPacking getBinPacking() { return this.binPacking; }
+    public BinPacking getBinList() { return this.binList; }
 
     private void setItemList(List<Item> _items){
         this.itemList = _items;
@@ -27,8 +26,12 @@ public class BinPackingScenario {
 
     public void setBinList(int sizeLimit, List<Bin> list){
         // TODO à améliorer
-        this.binPacking = new BinPacking(sizeLimit, this.itemList, list);
+        this.binList = new BinPacking(sizeLimit, this.itemList, list);
     }
+
+    public int getObjectiveValue() { return binList.getObjectiveValue(); }
+    public int getBestObjectiveValue() { return bestBinList.getObjectiveValue(); }
+    public int getOriginalObjectiveValue() { return originalBinList.getObjectiveValue(); }
 
     public int getTheoreticalMinimumBinNumber(){
         float sum = itemList.stream().mapToInt( i -> {return i.getSize();}).sum();

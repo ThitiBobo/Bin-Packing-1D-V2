@@ -5,7 +5,7 @@ import models.BinPacking;
 
 import java.util.Iterator;
 
-public class BinUtils {
+public class BinPackingUtils {
 
     public static void displayInfo(BinPacking binPacking){
         int nbItem = binPacking.getItemList().size();

@@ -19,6 +19,7 @@ public class Bin {
     public List<Item> getList() {
         return list;
     }
+    public int getOccupiedSpace() { return this.occupiedSpace; }
     private void setList(List<Item> _item){
         if (_item == null) throw new IllegalArgumentException("list can't be null");
         this.occupiedSpace = 0;

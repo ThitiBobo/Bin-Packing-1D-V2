@@ -20,6 +20,11 @@ public class BinPacking {
     public List<Item> getItemList() { return itemList; }
     public List<Bin> getBinList() { return binList; }
 
+    public int getTheoreticalMinimumBinNumber(){
+        float sum = itemList.stream().mapToInt( i -> {return i.getSize();}).sum();
+        return (int)Math.ceil(sum / sizeLimit);
+    }
+
     public void setBinList(List<Bin> _list){
         if (_list == null) throw new IllegalArgumentException("list can't be null");
         this.objectiveValue = 0;

@@ -14,9 +14,12 @@ public class BinPackingScenario {
     private BinPacking binPacking;
     private List<Operation> operationHistory;
 
+    public int getSizeLimit() { return this.sizeLimit; }
     public List<Item> getItemList(){
         return this.itemList;
     }
+
+    public BinPacking getBinPacking() { return this.binPacking; }
 
     private void setItemList(List<Item> _items){
         this.itemList = _items;

@@ -3,16 +3,16 @@ package scenarios;
 import models.Bin;
 import utils.BinPackingGenerator;
 import utils.BinPackingUtils;
-import utils.SimulatedAnnealing;
+import utils.Heuristic;
 
 import java.util.List;
 
 public class SimulatedAnnealingTest extends ScriptBase{
 
     public static final double T_INIT = 500.0;
-    public static final int N_MAX = 200;
-    public static final int K_MAX = 200;
-    public static final double MU = 0.95;
+    public static final int N_MAX = 5000;
+    public static final int K_MAX = 500;
+    public static final double MU = 0.98;
 
     public static void main(String[] args) {
         ScriptBase script = new SimulatedAnnealingTest();
@@ -42,20 +42,13 @@ public class SimulatedAnnealingTest extends ScriptBase{
     @Override
     protected void run() {
 
-        SimulatedAnnealing.simulatedAnnealing(
-                manager.getAllBinPackingScenario().get("resources/data/binpack1d_00.txt"),
-                T_INIT,
-                N_MAX,
-                K_MAX,
-                MU
-        );
-//        try {
-//            manager.getAllBinPackingScenario().forEach( (key, value) -> {
-//                SimulatedAnnealing.simulatedAnnealing(value, T_INIT, N_MAX, K_MAX, MU);
-//            });
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        try {
+            manager.getAllBinPackingScenario().forEach( (key, value) -> {
+                Heuristic.simulatedAnnealing(value, T_INIT, N_MAX, K_MAX, MU);
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

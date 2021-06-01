@@ -8,18 +8,19 @@ public class MoveOperation extends Operation{
 
     private Item item;
     private Bin bin;
+    private int binIndex;
 
     public Item getItem() {
         return item;
     }
+    public Bin getBin() {
+        return bin;
+    }
+    public int getBinIndex() { return binIndex; }
 
     private void setItem(Item item) {
         if (item == null) throw  new IllegalArgumentException("item is null");
         this.item = item;
-    }
-
-    public Bin getBin() {
-        return bin;
     }
 
     public void setBin(Bin bin) {
@@ -27,10 +28,11 @@ public class MoveOperation extends Operation{
         this.bin = bin;
     }
 
-    public MoveOperation(int _objectiveValue, Item _item, Bin _bin) {
+    public MoveOperation(int _objectiveValue, Item _item, Bin _bin, int binIndex) {
         super(_objectiveValue);
         setItem(_item);
         setBin(_bin);
+        this.binIndex = binIndex;
     }
 
     @Override

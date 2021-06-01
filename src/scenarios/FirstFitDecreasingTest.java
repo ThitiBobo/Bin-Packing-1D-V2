@@ -1,6 +1,7 @@
 package scenarios;
 
 import models.Bin;
+import models.BinPackingScenario;
 import utils.BinPackingGenerator;
 import utils.BinPackingUtils;
 
@@ -26,6 +27,7 @@ public class FirstFitDecreasingTest extends ScriptBase{
 
     @Override
     protected void run() {
+
         try {
             manager.getAllBinPackingScenario().forEach( (key, value) -> {
                 List<Bin> binList = BinPackingGenerator.firstFitDecreasing(value.getItemList(), value.getSizeLimit());
@@ -42,6 +44,7 @@ public class FirstFitDecreasingTest extends ScriptBase{
         try {
             manager.getAllBinPackingScenario().forEach( (key, value) -> {
                 System.out.println(key);
+                System.out.println(value.getBinList().hash());
                 BinPackingUtils.displayInfo(value.getBinList());
                 BinPackingUtils.display(value.getBinList());
                 System.out.println("");

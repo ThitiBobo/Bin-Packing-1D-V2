@@ -3,6 +3,7 @@ package models;
 import models.operations.Operation;
 import utils.BinPackingUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BinPackingScenario implements Comparable<BinPackingScenario>{
@@ -50,6 +51,7 @@ public class BinPackingScenario implements Comparable<BinPackingScenario>{
     public BinPackingScenario(String name, int sizeLimit, List<Item> itemList, List<Bin> binList){
         this.name = name;
         this.sizeLimit = sizeLimit;
+        this.operationHistory = new ArrayList<>();
         setItemList(itemList);
         setBinList(sizeLimit, binList);
     }
@@ -57,6 +59,7 @@ public class BinPackingScenario implements Comparable<BinPackingScenario>{
     public BinPackingScenario(String name, int sizeLimit, List<Item> itemList){
         this.name = name;
         this.sizeLimit = sizeLimit;
+        this.operationHistory = new ArrayList<>();
         setItemList(itemList);
     }
 
@@ -64,9 +67,12 @@ public class BinPackingScenario implements Comparable<BinPackingScenario>{
         return this.binList.getRandomOperation();
     }
 
+    public void updateHistory(Operation op){
+        this.operationHistory.add(op);
+    }
+
     public void updateBestScenario() {
         this.bestBinList = (BinPacking) this.binList.clone();
-        BinPackingUtils.displayInfo(this.getBestBinList());
     }
 
     @Override

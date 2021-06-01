@@ -55,8 +55,8 @@ public class Bin implements Comparable<Bin>, Cloneable{
         return _item.getSize() <= (this.sizeLimit - this.occupiedSpace);
     }
 
-    public void add(Item _item) throws Exception {
-        if (!hasSpace(_item)) throw new Exception("not enough space to put the item");
+    public void add(Item _item) {
+        if (!hasSpace(_item)) throw new IllegalArgumentException("not enough space to put the item");
         this.list.add(_item);
         this.occupiedSpace += _item.getSize();
         this.updateObjectiveValue();

@@ -9,7 +9,7 @@ public class ScenarioManager {
     private static ScenarioManager instance;
     private final static String FOLDER_PATH = "resources/data/";
 
-    private Map<String, BinPackingScenario> scenarioList;
+    private TreeMap<String, BinPackingScenario> scenarioList;
     private Map<String, String> binDataList;
 
     public BinPackingScenario getBinPackingScenario(int index) throws Exception {
@@ -23,7 +23,7 @@ public class ScenarioManager {
     }
 
     private ScenarioManager(){
-        this.scenarioList = new HashMap<>();
+        this.scenarioList = new TreeMap<>();
         this.binDataList = new HashMap<>();
 
         List<String> folderList = FileUtils.listFilesForFolder(FOLDER_PATH);
@@ -47,7 +47,7 @@ public class ScenarioManager {
             AbstractMap.SimpleEntry<Integer, List<Item>> res = calculateItemList(value);
             int sizeLimit = res.getKey();
             List<Item> items = res.getValue();
-            this.scenarioList.put(key ,new BinPackingScenario(sizeLimit, items));
+            this.scenarioList.put(key ,new BinPackingScenario(key, sizeLimit, items));
         });
     }
 

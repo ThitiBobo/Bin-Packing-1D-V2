@@ -1,16 +1,15 @@
 package scenarios;
 
+import models.BinPackingScenario;
+import models.Pair;
 import models.ScenarioManager;
 import utils.FileUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CalculBorneInf extends ScriptBase{
 
-    private Map<String, Integer> results;
+    private List<Pair<String, Integer>> results;
 
     public static void main(String[] args) {
         ScriptBase script = new CalculBorneInf();
@@ -19,7 +18,7 @@ public class CalculBorneInf extends ScriptBase{
 
     public CalculBorneInf(){
         super();
-        this.results = new HashMap<>();
+        this.results = new ArrayList<>();
     }
 
     @Override
@@ -32,9 +31,10 @@ public class CalculBorneInf extends ScriptBase{
     @Override
     protected void run() {
         try {
-            manager.getAllBinPackingScenario().forEach( (key, binPackingScenario) -> {
-                this.results.put(key ,binPackingScenario.getTheoreticalMinimumBinNumber());
+            manager.getAllBinPackingScenario().forEach( (key, value) -> {
+                this.results.add(new Pair<>(key, value.getTheoreticalMinimumBinNumber()));
             });
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -42,10 +42,9 @@ public class CalculBorneInf extends ScriptBase{
 
     @Override
     protected void display() {
-        System.out.println("execution time : " + getDurationTime());
-        System.out.println();
-        this.results.forEach( (key, value) -> {
-            System.out.println(key + " : " + value);
+
+        this.results.forEach( pair -> {
+            System.out.println(pair.getL() + " : " + pair.getR());
         });
         System.out.println();
     }

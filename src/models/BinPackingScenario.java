@@ -4,9 +4,10 @@ import models.operations.Operation;
 
 import java.util.List;
 
-public class BinPackingScenario {
+public class BinPackingScenario implements Comparable<BinPackingScenario>{
 
     private int sizeLimit;
+    private String name;
     private List<Item> itemList;
     private BinPacking originalBinList;
     private BinPacking bestBinList;
@@ -14,6 +15,7 @@ public class BinPackingScenario {
     private List<Operation> operationHistory;
 
     public int getSizeLimit() { return this.sizeLimit; }
+    public String getName() {return this.name; }
     public List<Item> getItemList(){
         return this.itemList;
     }
@@ -38,15 +40,21 @@ public class BinPackingScenario {
         return (int)Math.ceil(sum / sizeLimit);
     }
 
-    public BinPackingScenario(int sizeLimit, List<Item> itemList, List<Bin> binList){
+    public BinPackingScenario(String name, int sizeLimit, List<Item> itemList, List<Bin> binList){
+        this.name = name;
         this.sizeLimit = sizeLimit;
         setItemList(itemList);
         setBinList(sizeLimit, binList);
     }
 
-    public BinPackingScenario(int sizeLimit, List<Item> itemList){
+    public BinPackingScenario(String name, int sizeLimit, List<Item> itemList){
+        this.name = name;
         this.sizeLimit = sizeLimit;
         setItemList(itemList);
     }
 
+    @Override
+    public int compareTo(BinPackingScenario o) {
+        return this.name.compareTo(o.getName());
+    }
 }

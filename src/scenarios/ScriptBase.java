@@ -23,6 +23,8 @@ public abstract class ScriptBase {
         long endTime = System.nanoTime();
         this.durationInNano = (endTime - startTime);
 
+        System.out.println("execution time : " + getDurationTime());
+        System.out.println("");
         display();
     }
 

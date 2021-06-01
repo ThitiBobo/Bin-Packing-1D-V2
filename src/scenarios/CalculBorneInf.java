@@ -42,7 +42,8 @@ public class CalculBorneInf extends ScriptBase{
 
     @Override
     protected void display() {
-        System.out.println(getDurationTime());
+        System.out.println("execution time : " + getDurationTime());
+        System.out.println();
         this.results.forEach( (key, value) -> {
             System.out.println(key + " : " + value);
         });

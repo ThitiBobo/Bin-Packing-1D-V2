@@ -38,11 +38,13 @@ public class RandomGeneratorTest extends ScriptBase{
 
     @Override
     protected void display() {
+        System.out.println("execution time : " + getDurationTime());
+        System.out.println();
         try{
             manager.getAllBinPackingScenario().forEach( (key, value) -> {
                 System.out.println(key);
                 BinPackingUtils.displayInfo(value.getBinList());
-                BinPackingUtils.display(value.getBinList());
+                BinPackingUtils.display(value.getBinList(), 10);
                 System.out.println("");
             });
         } catch (Exception e) {

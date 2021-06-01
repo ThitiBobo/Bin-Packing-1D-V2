@@ -21,7 +21,7 @@ public class SimulatedAnnealing {
                     int bestObjectiveValue = scenario.getBestObjectiveValue();
                     applyOperation(scenario, neighborhood);
                     if (scenario.getObjectiveValue() > bestObjectiveValue){
-                        scenario.updateBestScenario();
+                        //scenario.updateBestScenario();
                     }
 
                 } else {

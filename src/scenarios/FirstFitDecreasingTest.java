@@ -38,6 +38,9 @@ public class FirstFitDecreasingTest extends ScriptBase{
 
     @Override
     protected void display() {
+        System.out.println("execution time : " + getDurationTime());
+        System.out.println();
+
         try {
             manager.getAllBinPackingScenario().forEach( (key, value) -> {
                 System.out.println(key);

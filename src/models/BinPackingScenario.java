@@ -1,6 +1,7 @@
 package models;
 
 import models.operations.Operation;
+import utils.BinPackingUtils;
 
 import java.util.List;
 
@@ -21,6 +22,19 @@ public class BinPackingScenario implements Comparable<BinPackingScenario>{
     }
 
     public BinPacking getBinList() { return this.binList; }
+    public BinPacking getBestBinList() { return this.bestBinList; }
+    public BinPacking getOriginalBinList() { return this.originalBinList; }
+
+    public int getObjectiveValue() { return binList.getObjectiveValue(); }
+    public int getBestObjectiveValue() { return bestBinList.getObjectiveValue(); }
+    public int getOriginalObjectiveValue() { return originalBinList.getObjectiveValue(); }
+
+    public List<Operation> getOperationHistory() { return this.operationHistory; }
+
+    public int getTheoreticalMinimumBinNumber(){
+        float sum = itemList.stream().mapToInt( i -> {return i.getSize();}).sum();
+        return (int)Math.ceil(sum / sizeLimit);
+    }
 
     private void setItemList(List<Item> _items){
         this.itemList = _items;
@@ -29,15 +43,8 @@ public class BinPackingScenario implements Comparable<BinPackingScenario>{
     public void setBinList(int sizeLimit, List<Bin> list){
         // TODO à améliorer
         this.binList = new BinPacking(sizeLimit, this.itemList, list);
-    }
-
-    public int getObjectiveValue() { return binList.getObjectiveValue(); }
-    public int getBestObjectiveValue() { return bestBinList.getObjectiveValue(); }
-    public int getOriginalObjectiveValue() { return originalBinList.getObjectiveValue(); }
-
-    public int getTheoreticalMinimumBinNumber(){
-        float sum = itemList.stream().mapToInt( i -> {return i.getSize();}).sum();
-        return (int)Math.ceil(sum / sizeLimit);
+        this.originalBinList = (BinPacking) this.binList.clone();
+        this.bestBinList = (BinPacking) this.binList.clone();
     }
 
     public BinPackingScenario(String name, int sizeLimit, List<Item> itemList, List<Bin> binList){
@@ -51,6 +58,15 @@ public class BinPackingScenario implements Comparable<BinPackingScenario>{
         this.name = name;
         this.sizeLimit = sizeLimit;
         setItemList(itemList);
+    }
+
+    public Operation getRandomOperation() {
+        return this.binList.getRandomOperation();
+    }
+
+    public void updateBestScenario() {
+        this.bestBinList = (BinPacking) this.binList.clone();
+        BinPackingUtils.displayInfo(this.getBestBinList());
     }
 
     @Override

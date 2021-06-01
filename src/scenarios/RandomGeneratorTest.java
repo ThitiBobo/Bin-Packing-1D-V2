@@ -1,6 +1,7 @@
 package scenarios;
 
 import models.Bin;
+import models.operations.Operation;
 import utils.BinPackingGenerator;
 import utils.BinPackingUtils;
 

@@ -3,7 +3,7 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Bin {
+public class Bin implements Comparable<Bin>, Cloneable{
 
     private int sizeLimit;
     private int objectiveValue;
@@ -20,6 +20,8 @@ public class Bin {
         return list;
     }
     public int getOccupiedSpace() { return this.occupiedSpace; }
+    public int getRemainingSpace() { return this.sizeLimit - this.occupiedSpace; }
+
     private void setList(List<Item> _item){
         if (_item == null) throw new IllegalArgumentException("list can't be null");
         this.occupiedSpace = 0;
@@ -32,6 +34,7 @@ public class Bin {
     }
 
     public Bin(int _sizeLimit, List<Item> _list){
+        this.objectiveValue = 0;
         this.sizeLimit = _sizeLimit;
         setList(_list);
     }
@@ -77,6 +80,21 @@ public class Bin {
     }
 
     @Override
+    protected Object clone() throws CloneNotSupportedException{
+        super.clone();
+        List<Item> list = new ArrayList<>();
+        this.list.forEach( item -> {
+            try {
+                list.add((Item) item.clone());
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+        });
+        return new Bin(this.sizeLimit, list);
+
+    }
+
+    @Override
     public String toString() {
         return "Bin{" +
                 "sizeLimit=" + sizeLimit +
@@ -84,5 +102,10 @@ public class Bin {
                 ", list=" + list +
                 ", occupiedSpace=" + occupiedSpace +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Bin o) {
+        return this.objectiveValue - o.getObjectiveValue();
     }
 }

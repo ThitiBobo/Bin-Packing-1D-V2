@@ -1,11 +1,13 @@
 package models.operations;
 
 import models.Bin;
+import models.BinPacking;
 import models.Item;
 
 public class MoveOperation extends Operation{
 
     private Item item;
+    private Bin bin;
 
     public Item getItem() {
         return item;
@@ -25,11 +27,29 @@ public class MoveOperation extends Operation{
         this.bin = bin;
     }
 
-    private Bin bin;
-
     public MoveOperation(int _objectiveValue, Item _item, Bin _bin) {
         super(_objectiveValue);
         setItem(_item);
         setBin(_bin);
+    }
+
+    @Override
+    public boolean check() {
+        if (item.getBin() == bin) return false;
+        return bin.hasSpace(item);
+    }
+
+    @Override
+    public void updateObjectiveValue(int objectiveValue) {
+        int oldBinOccupiedSpace = item.getBin().getOccupiedSpace() - item.getSize();
+        int newBinOccupiedSpace = bin.getOccupiedSpace() + item.getSize();
+
+        this.setObjectiveValue(
+                (int) (objectiveValue
+                    - item.getBin().getObjectiveValue()
+                    - bin.getObjectiveValue()
+                    + Math.pow(oldBinOccupiedSpace, 2)
+                    + Math.pow(newBinOccupiedSpace, 2))
+        );
     }
 }

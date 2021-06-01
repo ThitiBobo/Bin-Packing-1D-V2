@@ -12,8 +12,7 @@ public class SimulatedAnnealing {
         double t = tinit;
         for (int n = 0 ; n < nmax; n++){
             for (int k = 0; k < kmax; k++){
-                // TODO get a neighborhood
-                Operation neighborhood = null;
+                Operation neighborhood = scenario.getRandomOperation();
 
                 int delta = neighborhood.getObjectiveValue() - scenario.getObjectiveValue();
 
@@ -21,7 +20,8 @@ public class SimulatedAnnealing {
                     int bestObjectiveValue = scenario.getBestObjectiveValue();
                     applyOperation(scenario, neighborhood);
                     if (scenario.getObjectiveValue() > bestObjectiveValue){
-                        //scenario.updateBestScenario();
+                        System.out.println("obj value : " + neighborhood.getObjectiveValue() + " : " + bestObjectiveValue);
+                        scenario.updateBestScenario();
                     }
 
                 } else {

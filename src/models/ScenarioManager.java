@@ -17,8 +17,8 @@ public class ScenarioManager {
         return this.scenarioList.get(index);
     }
 
-    public Map<String, BinPackingScenario> getAllBinPackingScenario() throws Exception {
-        if (this.scenarioList == null) throw new Exception("list of scenario does not exist, you must initialize it");
+    public Map<String, BinPackingScenario> getAllBinPackingScenario(){
+        if (this.scenarioList == null) initAllBinPackingScenario();
         return this.scenarioList;
     }
 

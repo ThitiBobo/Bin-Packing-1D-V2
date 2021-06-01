@@ -11,10 +11,12 @@ public class BinPackingUtils {
         int nbItem = binPacking.getItemList().size();
         int nbBin = binPacking.getBinList().size();
         int nbTheoreticalBin = binPacking.getTheoreticalMinimumBinNumber();
-        System.out.println(String.format("items number : %s  bins number : %s  theoretical bins number : %s",
+        int fitness = binPacking.getObjectiveValue();
+        System.out.println(String.format("items number : %s  bins number : %s  theoretical bins number : %s  objective value : %s",
                 nbItem,
                 nbBin,
-                nbTheoreticalBin));
+                nbTheoreticalBin,
+                fitness));
     }
 
     public static void display(BinPacking binPacking){
@@ -30,7 +32,7 @@ public class BinPackingUtils {
             bin.getList().forEach( item -> {
                 System.out.print(item.getSize() + " ");
             });
-            System.out.println("] " + bin.getOccupiedSpace() + "/" + bin.getSizeLimit());
+            System.out.println("] " + bin.getOccupiedSpace() + "/" + bin.getSizeLimit() + " : " + bin.getObjectiveValue());
             i++;
         }
         if (displayLimit != binPacking.getBinList().size()){

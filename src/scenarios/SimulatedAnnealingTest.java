@@ -57,7 +57,7 @@ public class SimulatedAnnealingTest extends ScriptBase{
         manager.getAllBinPackingScenario().forEach( (key, value) -> {
             System.out.println(key);
             BinPackingUtils.displayInfo(value.getBestBinList());
-            BinPackingUtils.display(value.getBestBinList());
+            BinPackingUtils.display(value.getBestBinList(), 20);
             System.out.println("");
         });
 

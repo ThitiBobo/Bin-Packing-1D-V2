@@ -44,9 +44,8 @@ public class FirstFitDecreasingTest extends ScriptBase{
         try {
             manager.getAllBinPackingScenario().forEach( (key, value) -> {
                 System.out.println(key);
-                System.out.println(value.getBinList().hash());
                 BinPackingUtils.displayInfo(value.getBinList());
-                BinPackingUtils.display(value.getBinList());
+                BinPackingUtils.display(value.getBinList(), 20);
                 System.out.println("");
             });
         } catch (Exception e) {

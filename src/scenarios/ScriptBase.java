@@ -1,6 +1,13 @@
 package scenarios;
 
+import models.Bin;
+import models.BinPackingScenario;
+import models.Item;
 import models.ScenarioManager;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public abstract class ScriptBase {
 
@@ -13,6 +20,10 @@ public abstract class ScriptBase {
 
     public void initAllBinPackingScenario(){
         this.manager.initAllBinPackingScenario();
+    }
+
+    public BinPackingScenario initBinPackingScenario(int index){
+        return this.manager.initBinPackingScenario(index);
     }
 
     public void start(){
@@ -50,6 +61,15 @@ public abstract class ScriptBase {
         builder.append("(").append(millisecondes).append(")");
 
         return builder.toString();
+    }
+
+    public BinPackingScenario generateScenario(int sizeLimit, int nbItem){
+        Random random = new Random();
+        List<Item> itemList = new ArrayList<>();
+        for (int i = 0; i < nbItem; i++){
+            itemList.add(new Item(i, random.nextInt(sizeLimit - 2) + 2));
+        }
+        return new BinPackingScenario("", sizeLimit, itemList);
     }
 
     protected abstract void init();

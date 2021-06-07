@@ -67,9 +67,6 @@ public class Heuristic {
             }
             n++;
         }
-        System.out.println(tabuList.size());
-        System.out.println(tabuList);
-
     }
 
     private static void applyOperation(BinPackingScenario scenario, Operation operation){

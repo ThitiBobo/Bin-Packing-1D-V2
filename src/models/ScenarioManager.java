@@ -41,6 +41,16 @@ public class ScenarioManager {
         });
     }
 
+    public BinPackingScenario initBinPackingScenario(int i){
+        List<String> folderList = FileUtils.listFilesForFolder(FOLDER_PATH);
+        String name = folderList.get(i);
+        String value = this.binDataList.get(name);
+        AbstractMap.SimpleEntry<Integer, List<Item>> res = calculateItemList(value);
+        int sizeLimit = res.getKey();
+        List<Item> items = res.getValue();
+        return new BinPackingScenario(name, sizeLimit, items);
+    }
+
     public void initAllBinPackingScenario(){
         this.scenarioList.clear();
         this.binDataList.forEach((key, value) -> {

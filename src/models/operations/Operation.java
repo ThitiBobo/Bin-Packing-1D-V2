@@ -25,4 +25,6 @@ public abstract class Operation {
     public abstract boolean check();
 
     public abstract void updateObjectiveValue(int objectiveValue);
+
+    public abstract void calculateHash(BinPacking binPacking);
 }

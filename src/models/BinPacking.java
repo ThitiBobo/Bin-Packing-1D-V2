@@ -5,6 +5,7 @@ import models.operations.MoveOperation;
 import models.operations.Operation;
 import models.operations.SwitchOperation;
 import utils.BinPackingUtils;
+import utils.CombinationGenerator;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -117,19 +118,44 @@ public class BinPacking implements Cloneable{
         this.objectiveValue = operation.getObjectiveValue();
     }
 
-    // TODO à implémenter
-    public List<Operation> getAllNeighborhoodOperation() throws ExecutionControl.NotImplementedException {
-        throw new ExecutionControl.NotImplementedException("fe");
+    public List<Operation> getAllNeighborhoodOperation(){
+        List<Operation> operations = new ArrayList<>();
+        operations.addAll(getAllSwitchOperation());
+        operations.addAll(getAllMoveOperation());
+        return operations;
     }
 
-    // TODO à implémenter
-    public List<Operation> getAllSwitchOperation() throws ExecutionControl.NotImplementedException {
-        throw new ExecutionControl.NotImplementedException("fe");
+    private List<Operation> getAllSwitchOperation() {
+        List<Pair<Item, Item>> combinations = CombinationGenerator.combination(itemList);
+        List<Operation> validOperations = new ArrayList<>();
+
+        combinations.forEach( couple -> {
+            SwitchOperation op = new SwitchOperation(0, couple.getL(), couple.getR());
+            if(op.check()){
+                op.updateObjectiveValue(objectiveValue);
+                op.calculateHash(this);
+                validOperations.add(op);
+            }
+        });
+        return validOperations;
     }
 
-    // TODO à implémenter
-    public List<Operation> getAllMoveOperation() throws ExecutionControl.NotImplementedException {
-        throw new ExecutionControl.NotImplementedException("fe");
+    private List<Operation> getAllMoveOperation() {
+
+        List<Bin> bins = new ArrayList<>(this.binList);
+        bins.add(new Bin(sizeLimit));
+        List<Pair<Item, Bin>> combinations = CombinationGenerator.combination(itemList, bins);
+        List<Operation> validOperations = new ArrayList<>();
+
+        combinations.forEach( couple -> {
+            MoveOperation op = new MoveOperation(0, couple.getL(), couple.getR(), 0);
+            if (op.check()){
+                op.updateObjectiveValue(objectiveValue);
+                op.calculateHash(this);
+                validOperations.add(op);
+            }
+        });
+        return validOperations;
     }
 
     public boolean isValid(Operation op){
@@ -162,30 +188,7 @@ public class BinPacking implements Cloneable{
         op.updateObjectiveValue(this.getObjectiveValue());
 
         // CALCUL HASH
-        if (op instanceof SwitchOperation){
-            Item item1 = ((SwitchOperation) op).getItem1();
-            Item item2 = ((SwitchOperation) op).getItem2();
-            item1.getBin().remove(item1);
-            item2.getBin().remove(item2);
-            item1.getBin().add(item2);
-            item2.getBin().add(item1);
-            String hash = this.hash();
-            item1.getBin().remove(item2);
-            item2.getBin().remove(item1);
-            item1.getBin().add(item1);
-            item2.getBin().add(item2);
-            op.setHash(hash);
-        }
-        if (op instanceof MoveOperation){
-            Item item = ((MoveOperation) op).getItem();
-            Bin bin = ((MoveOperation) op).getBin();
-            item.getBin().remove(item);
-            bin.add(item);
-            String hash = this.hash();
-            bin.remove(item);
-            item.getBin().add(item);
-            op.setHash(hash);
-        }
+        op.calculateHash(this);
 
         return op;
     }

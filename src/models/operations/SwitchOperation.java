@@ -1,5 +1,6 @@
 package models.operations;
 
+import models.BinPacking;
 import models.Item;
 
 public class SwitchOperation extends Operation{
@@ -51,5 +52,19 @@ public class SwitchOperation extends Operation{
                         + Math.pow(newObjectiveValue1,2)
                         + Math.pow(newObjectiveValue2, 2))
         );
+    }
+
+    @Override
+    public void calculateHash(BinPacking binPacking) {
+        item1.getBin().remove(item1);
+        item2.getBin().remove(item2);
+        item1.getBin().add(item2);
+        item2.getBin().add(item1);
+        String hash = binPacking.hash();
+        item1.getBin().remove(item2);
+        item2.getBin().remove(item1);
+        item1.getBin().add(item1);
+        item2.getBin().add(item2);
+        this.setHash(hash);
     }
 }

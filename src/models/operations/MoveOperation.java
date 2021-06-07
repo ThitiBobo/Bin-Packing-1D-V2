@@ -54,4 +54,14 @@ public class MoveOperation extends Operation{
                     + Math.pow(newBinOccupiedSpace, 2))
         );
     }
+
+    @Override
+    public void calculateHash(BinPacking binPacking) {
+        item.getBin().remove(item);
+        bin.add(item);
+        String hash = binPacking.hash();
+        bin.remove(item);
+        item.getBin().add(item);
+        this.setHash(hash);
+    }
 }

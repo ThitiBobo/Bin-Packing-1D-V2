@@ -6,9 +6,7 @@ import models.operations.MoveOperation;
 import models.operations.Operation;
 import models.operations.SwitchOperation;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class Heuristic {
 
@@ -39,23 +37,38 @@ public class Heuristic {
     }
 
     public static void tabuSearch(BinPackingScenario scenario, int nmax, int size){
-        // TODO comment retenir les move avec bin, si les bin disparaissent ?
         Queue<String> tabuList = new LinkedList<>();
         tabuList.add(scenario.getBinList().hash());
+        Random random = new Random();
         int n = 0;
         while (n < nmax){
             List<Operation> operations = scenario.getBinList().getAllNeighborhoodOperation();
+            List<Operation> validOperations = new ArrayList<>();
             Operation bestOp = operations.get(0);
+
             for (Operation op : operations){
-                if (!tabuList.contains(op.getHash()) && op.getObjectiveValue() > bestOp.getObjectiveValue()){
-                    bestOp = op;
+                if (!tabuList.contains(op.getHash()) ) {
+                    validOperations.add(op);
+                    if (op.getObjectiveValue() > bestOp.getObjectiveValue()) {
+                        bestOp = op;
+                    }
                 }
             }
+            if (bestOp.getObjectiveValue() <= scenario.getBestObjectiveValue()){
+                bestOp = validOperations.get(random.nextInt(validOperations.size()));
+                tabuList.add(scenario.getBinList().hash());
+                if (tabuList.size() > size)
+                    tabuList.remove();
+            }
 
-
-
+            applyOperation(scenario, bestOp);
+            if (scenario.getObjectiveValue() > scenario.getBestObjectiveValue()){
+                scenario.updateBestScenario();
+            }
             n++;
         }
+        System.out.println(tabuList.size());
+        System.out.println(tabuList);
 
     }
 

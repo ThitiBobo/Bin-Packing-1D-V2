@@ -35,7 +35,7 @@ public class BinPackingUtils {
             System.out.println("] " + bin.getOccupiedSpace() + "/" + bin.getSizeLimit() + " : " + bin.getObjectiveValue());
             i++;
         }
-        if (displayLimit != binPacking.getBinList().size()){
+        if (displayLimit < binPacking.getBinList().size()){
             System.out.println(String.format("%s more ...", binPacking.getBinList().size() - displayLimit));
         }
     }
